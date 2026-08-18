@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="微積分1の分野別計算演習" />
+    <title>微積分1 分野別演習</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./src/style.css?v=1.3.0" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.js" integrity="sha384-AtrdNsnxl/75rvBneBVH7DtOvCxSVahR2zWqle1coBKd8DEmLoviqNeJSx64gNAs" crossorigin="anonymous"></script>
+    <script defer src="./src/judge-core.js?v=1.3.0"></script>
+    <script defer src="./src/generators-core.js?v=1.3.2"></script>
+    <script defer src="./src/shared-page.js?v=1.3.0"></script>
+    <script defer src="./src/practice-page.js?v=1.3.0"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div>
+          <p class="eyebrow">SOCIAL DATA SCIENCE · CALCULUS I</p>
+          <h1>微積分1 分野別演習</h1>
+          <p class="lead">分野別の5問、または全分野から出題される総合10問で理解度を確認できます。</p>
+        </div>
+        <a class="pdf-link" href="./public/微積分1問題集_改訂版.pdf" download>問題集PDFを開く</a>
+      </div>
+    </header>
+
+    <nav class="mode-switch" aria-label="演習ページ">
+      <a class="mode-button" href="./index.html">問題集</a>
+      <a class="mode-button is-active" href="./practice.html" aria-current="page">分野別演習</a>
+    </nav>
+
+    <main class="practice-shell">
+      <section class="practice-toolbar" aria-labelledby="practice-heading">
+        <div>
+          <p class="section-kicker">GENERATED PRACTICE</p>
+          <h2 id="practice-heading">演習分野を選択</h2>
+          <p>各分野は5問、総合演習は全分野から10問を生成します。</p>
+        </div>
+        <div class="topic-controls">
+          <label for="topic-select">分野</label>
+          <select id="topic-select"></select>
+          <button id="generate-button" class="primary-button" type="button">10問を作る</button>
+        </div>
+      </section>
+
+      <div class="practice-layout">
+        <section class="problem-pane" aria-labelledby="generated-heading">
+          <div class="section-heading">
+            <div><p class="section-kicker">EXERCISES</p><h2 id="generated-heading">生成問題</h2></div>
+            <span id="generated-topic" class="count-badge">総合演習・10問</span>
+          </div>
+          <div id="generated-list" aria-live="polite"></div>
+        </section>
+        <aside class="judge-pane" aria-labelledby="practice-judge-heading">
+          <div class="judge-card">
+            <p class="section-kicker">SUBMISSION</p>
+            <h2 id="practice-judge-heading">回答提出</h2>
+            <p class="format-description">問題番号と答えを1行ずつ入力し、表示された問題をまとめて判定します。</p>
+            <pre class="sample" aria-label="入力例">1 4
+2 -1/2
+3 3*pi</pre>
+            <label for="practice-submission">回答テキスト</label>
+            <textarea id="practice-submission" rows="10" spellcheck="false" placeholder="1 回答&#10;2 回答&#10;3 回答&#10;4 回答&#10;5 回答"></textarea>
+            <div class="button-row">
+              <button id="practice-judge-button" class="primary-button" type="button">まとめて判定</button>
+              <button id="practice-clear-button" class="secondary-button" type="button">クリア</button>
+            </div>
+            <p class="privacy-note">問題を作り直すと数値や問題形式が入れ替わります。履歴は保存しません。</p>
+          </div>
+          <section id="practice-results" class="results-card" aria-labelledby="practice-results-heading" hidden>
+            <p class="section-kicker">VERDICT</p>
+            <h2 id="practice-results-heading">判定結果</h2>
+            <p id="practice-score" class="score-line"></p>
+            <div id="practice-summary" class="summary-grid"></div>
+            <div id="practice-line-errors" class="line-errors"></div>
+            <div class="table-wrap"><table><thead><tr><th>問題</th><th>判定</th><th>提出した回答</th></tr></thead><tbody id="practice-result-body"></tbody></table></div>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer><p>微積分1担当 · 自習用問題集</p></footer>
+  </body>
+</html>
