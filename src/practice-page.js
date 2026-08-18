@@ -23,7 +23,7 @@
 
   function updateControls() {
     const topic = selectedTopic();
-    document.querySelector("#generate-button").textContent = `${topic.count}問を作る`;
+    document.querySelector("#generate-button").textContent = `${topic.count}問に挑戦する`;
     submission.rows = topic.count === 10 ? 14 : 10;
     submission.placeholder = Array.from({ length: topic.count }, (_, index) => `${index + 1} 回答`).join("\n");
   }
