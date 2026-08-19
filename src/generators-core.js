@@ -74,10 +74,17 @@ function piOver(denominatorValue) {
   return denominatorValue === 1 ? "\\pi" : `\\pi/${denominatorValue}`;
 }
 
-function makeTemplates(prefix, specs, build) {
-  return specs.map((spec) => (rng) => {
-    const result = build(spec, rng);
-    return item(`${prefix}-${spec}`, result.prompt, result.answer);
+function makeTemplates(prefix, specs, build, templateFamily = prefix) {
+  return specs.map((spec) => {
+    const generate = (rng) => {
+      const result = build(spec, rng);
+      return {
+        templateFamily,
+        ...item(`${prefix}-${spec}`, result.prompt, result.answer),
+      };
+    };
+    generate.templateFamily = templateFamily;
+    return generate;
   });
 }
 
@@ -194,7 +201,7 @@ const TAYLOR_EXTREMA = [
       prompt: `$e^{${variableTerm(k, "x", true)}}$ のマクローリン展開における $${powerOfX(degree)}$ の係数を求めよ。`,
       answer: fraction(k ** degree, factorial(degree)),
     };
-  }),
+  }, "taylor-coefficient"),
   ...makeTemplates("taylor-sine", [0, 1, 2, 3, 4], (order, rng) => {
     const degree = 2 * order + 1;
     const k = integer(rng, 1, 4);
@@ -202,7 +209,7 @@ const TAYLOR_EXTREMA = [
       prompt: `$\\sin(${variableTerm(k, "x", true)})$ のマクローリン展開における $${powerOfX(degree)}$ の係数を求めよ。`,
       answer: fraction((order % 2 ? -1 : 1) * k ** degree, factorial(degree)),
     };
-  }),
+  }, "taylor-coefficient"),
   ...makeTemplates("taylor-cosine", [1, 2, 3, 4, 5], (order, rng) => {
     const degree = 2 * order;
     const k = integer(rng, 1, 4);
@@ -210,20 +217,35 @@ const TAYLOR_EXTREMA = [
       prompt: `$\\cos(${variableTerm(k, "x", true)})$ のマクローリン展開における $${powerOfX(degree)}$ の係数を求めよ。`,
       answer: fraction((order % 2 ? -1 : 1) * k ** degree, factorial(degree)),
     };
-  }),
+  }, "taylor-coefficient"),
   ...makeTemplates("taylor-log", [1, 2, 3, 4, 5], (degree, rng) => {
     const k = integer(rng, 1, 5);
     return {
       prompt: `$\\log(1${variableTerm(k, "x")})$ のマクローリン展開における $${powerOfX(degree)}$ の係数を求めよ。`,
       answer: fraction((degree % 2 ? 1 : -1) * k ** degree, degree),
     };
-  }),
-  ...makeTemplates("minimum-quadratic", [1, 2, 3, 4, 5], (a, rng) => {
-    const h = signedInteger(rng, 1, 5);
-    const c = signedInteger(rng, 1, 8);
+  }, "taylor-coefficient"),
+  ...makeTemplates("critical-parameter", [1, 2, 3, 4, 5], (kind, rng) => {
+    const point = integer(rng, 1, 4);
+    if (kind === 1) return {
+      prompt: `$f(x)=x^4+px^2$ とする。$x=${point}$ が停留点となるように $p$ を定めよ。`,
+      answer: -2 * point ** 2,
+    };
+    if (kind === 2) return {
+      prompt: `$f(x)=x^3+px$ とする。$x=${point}$ が停留点となるように $p$ を定めよ。`,
+      answer: -3 * point ** 2,
+    };
+    if (kind === 3) return {
+      prompt: `$f(x)=e^x+px$ とする。$x=${point}$ が停留点となるように $p$ を定めよ。`,
+      answer: `-e^${point}`,
+    };
+    if (kind === 4) return {
+      prompt: `$f(x)=\\log(1+x)+px^2$ とする。$x=${point}$ が停留点となるように $p$ を定めよ。`,
+      answer: fraction(-1, 2 * point * (point + 1)),
+    };
     return {
-      prompt: `$f(x)=${variableTerm(a, "x^2", true)}${variableTerm(-2 * a * h, "x")}${constantTerm(a * h ** 2 + c)}$ の最小値を求めよ。`,
-      answer: c,
+      prompt: "$f(x)=\\sin x+px$ とする。$x=\\pi$ が停留点となるように $p$ を定めよ。",
+      answer: 1,
     };
   }),
   ...makeTemplates("taylor-exp-cos", [2, 3, 4, 5, 6], (degree, rng) => {
@@ -237,6 +259,68 @@ const TAYLOR_EXTREMA = [
     return {
       prompt: `$e^{${variableTerm(a, "x", true)}}\\cos(${variableTerm(b, "x", true)})$ のマクローリン展開における $${powerOfX(degree)}$ の係数を求めよ。`,
       answer: fraction(numerator, factorial(degree)),
+    };
+  }, "taylor-coefficient"),
+  ...makeTemplates("taylor-limit", [1, 2, 3, 4, 5], (kind, rng) => {
+    const k = integer(rng, 1, 5);
+    if (kind === 1) return {
+      prompt: `$\\displaystyle\\lim_{x\\to0}\\frac{e^{${variableTerm(k, "x", true)}}-1-${variableTerm(k, "x", true)}}{x^2}$ を求めよ。`,
+      answer: fraction(k ** 2, 2),
+    };
+    if (kind === 2) return {
+      prompt: `$\\displaystyle\\lim_{x\\to0}\\frac{\\sin(${variableTerm(k, "x", true)})-${variableTerm(k, "x", true)}}{x^3}$ を求めよ。`,
+      answer: fraction(-(k ** 3), 6),
+    };
+    if (kind === 3) return {
+      prompt: `$\\displaystyle\\lim_{x\\to0}\\frac{\\cos(${variableTerm(k, "x", true)})-1+\\frac{${k ** 2}}{2}x^2}{x^4}$ を求めよ。`,
+      answer: fraction(k ** 4, 24),
+    };
+    if (kind === 4) return {
+      prompt: `$\\displaystyle\\lim_{x\\to0}\\frac{\\log(1${variableTerm(k, "x")})-${variableTerm(k, "x", true)}}{x^2}$ を求めよ。`,
+      answer: fraction(-(k ** 2), 2),
+    };
+    return {
+      prompt: `$\\displaystyle\\lim_{x\\to0}\\frac{e^{${variableTerm(k, "x", true)}}-1-${variableTerm(k, "x", true)}-\\frac{${k ** 2}}{2}x^2}{x^3}$ を求めよ。`,
+      answer: fraction(k ** 3, 6),
+    };
+  }),
+  ...makeTemplates("taylor-approximation", [1, 2, 3, 4, 5], (kind, rng) => {
+    const k = integer(rng, 1, 3);
+    const m = integer(rng, 4, 8);
+    if (kind === 1) return {
+      prompt: `$e^{${variableTerm(k, "x", true)}}$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(1/${m})$ を求めよ。`,
+      answer: fraction(2 * m ** 2 + 2 * k * m + k ** 2, 2 * m ** 2),
+    };
+    if (kind === 2) return {
+      prompt: `$\\sin(${variableTerm(k, "x", true)})$ の3次マクローリン多項式を $T_3(x)$ とする。$T_3(1/${m})$ を求めよ。`,
+      answer: fraction(6 * k * m ** 2 - k ** 3, 6 * m ** 3),
+    };
+    if (kind === 3) return {
+      prompt: `$\\cos(${variableTerm(k, "x", true)})$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(1/${m})$ を求めよ。`,
+      answer: fraction(2 * m ** 2 - k ** 2, 2 * m ** 2),
+    };
+    if (kind === 4) return {
+      prompt: `$\\log(1${variableTerm(k, "x")})$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(1/${m})$ を求めよ。`,
+      answer: fraction(2 * k * m - k ** 2, 2 * m ** 2),
+    };
+    return {
+      prompt: `$\\sqrt{1${variableTerm(k, "x")}}$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(1/${m})$ を求めよ。`,
+      answer: fraction(8 * m ** 2 + 4 * k * m - k ** 2, 8 * m ** 2),
+    };
+  }),
+  ...makeTemplates("taylor-leading-order", [1, 2, 3, 4, 5], (kind, rng) => {
+    const k = integer(rng, 1, 5);
+    const expressions = [
+      `e^{${variableTerm(k, "x", true)}}-1`,
+      `\\sin(${variableTerm(k, "x", true)})-${variableTerm(k, "x", true)}`,
+      `\\cos(${variableTerm(k, "x", true)})-1`,
+      `e^{${variableTerm(k, "x", true)}}-1-${variableTerm(k, "x", true)}`,
+      `\\log(1${variableTerm(k, "x")})-${variableTerm(k, "x", true)}+\\frac{${k ** 2}}{2}x^2`,
+    ];
+    const orders = [1, 3, 2, 2, 3];
+    return {
+      prompt: `$\\displaystyle\\lim_{x\\to0}\\frac{${expressions[kind - 1]}}{x^n}$ が0でない有限値となる最小の正整数 $n$ を求めよ。`,
+      answer: orders[kind - 1],
     };
   }),
 ];
@@ -416,9 +500,28 @@ function shuffled(values, rng) {
   return result;
 }
 
+function generatorFamilies(topic) {
+  const families = new Map();
+  topic.generators.forEach((generate) => {
+    const family = generate.templateFamily || "other";
+    if (!families.has(family)) families.set(family, []);
+    families.get(family).push(generate);
+  });
+  return families;
+}
+
+function selectVariedGenerators(topic, count, rng) {
+  const selected = shuffled([...generatorFamilies(topic).values()], rng)
+    .slice(0, count)
+    .map((family) => shuffled(family, rng)[0]);
+  if (selected.length >= count) return selected;
+  const selectedSet = new Set(selected);
+  const remaining = shuffled(topic.generators.filter((generate) => !selectedSet.has(generate)), rng);
+  return [...selected, ...remaining.slice(0, count - selected.length)];
+}
+
 function generateFromTopic(topic, count, rng) {
-  return shuffled(topic.generators, rng)
-    .slice(0, Math.min(count, topic.generators.length))
+  return selectVariedGenerators(topic, Math.min(count, topic.generators.length), rng)
     .map((generate) => ({ section: topic.label, ...generate(rng) }));
 }
 
@@ -429,20 +532,23 @@ function generateComprehensive(rng) {
   shuffled(BASE_TOPICS, rng).forEach((topic) => {
     const question = generateFromTopic(topic, 1, rng)[0];
     selected.push(question);
-    usedIds.add(`${topic.id}:${question.templateId}`);
+    usedIds.add(`${topic.id}:${question.templateFamily}`);
   });
 
   const remainingPool = shuffled(
-    BASE_TOPICS.flatMap((topic) =>
-      topic.generators.map((generate) => ({ topic, generate })),
-    ),
+    BASE_TOPICS.flatMap((topic) => [...generatorFamilies(topic)].map(([family, generators]) => ({
+      topic,
+      family,
+      generators,
+    }))),
     rng,
   );
   for (const candidate of remainingPool) {
     if (selected.length >= 10) break;
-    const question = { section: candidate.topic.label, ...candidate.generate(rng) };
-    const key = `${candidate.topic.id}:${question.templateId}`;
+    const key = `${candidate.topic.id}:${candidate.family}`;
     if (usedIds.has(key)) continue;
+    const generate = shuffled(candidate.generators, rng)[0];
+    const question = { section: candidate.topic.label, ...generate(rng) };
     selected.push(question);
     usedIds.add(key);
   }
