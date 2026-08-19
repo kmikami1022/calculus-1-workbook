@@ -13,6 +13,19 @@ function fraction(numerator, denominator = 1) {
   return bottom === 1 ? String(top) : `${top}/${bottom}`;
 }
 
+function rationalTerm(numerator, denominator, variable, leading = false) {
+  if (denominator < 0) return rationalTerm(-numerator, -denominator, variable, leading);
+  const divisor = gcd(numerator, denominator);
+  const top = numerator / divisor;
+  const bottom = denominator / divisor;
+  const sign = top < 0 ? "-" : leading ? "" : "+";
+  const absoluteTop = Math.abs(top);
+  const magnitude = bottom === 1
+    ? (absoluteTop === 1 ? "" : String(absoluteTop))
+    : `\\frac{${absoluteTop}}{${bottom}}`;
+  return `${sign}${magnitude}${variable}`;
+}
+
 function factorial(n) {
   let value = 1;
   for (let index = 2; index <= n; index += 1) value *= index;
@@ -71,7 +84,7 @@ function denominator(coefficient, variable) {
 }
 
 function piOver(denominatorValue) {
-  return denominatorValue === 1 ? "\\pi" : `\\pi/${denominatorValue}`;
+  return denominatorValue === 1 ? "\\pi" : `\\frac{\\pi}{${denominatorValue}}`;
 }
 
 function makeTemplates(prefix, specs, build, templateFamily = prefix) {
@@ -272,7 +285,7 @@ const TAYLOR_EXTREMA = [
       answer: fraction(-(k ** 3), 6),
     };
     if (kind === 3) return {
-      prompt: `$\\displaystyle\\lim_{x\\to0}\\frac{\\cos(${variableTerm(k, "x", true)})-1+\\frac{${k ** 2}}{2}x^2}{x^4}$ を求めよ。`,
+      prompt: `$\\displaystyle\\lim_{x\\to0}\\frac{\\cos(${variableTerm(k, "x", true)})-1${rationalTerm(k ** 2, 2, "x^2")}}{x^4}$ を求めよ。`,
       answer: fraction(k ** 4, 24),
     };
     if (kind === 4) return {
@@ -280,7 +293,7 @@ const TAYLOR_EXTREMA = [
       answer: fraction(-(k ** 2), 2),
     };
     return {
-      prompt: `$\\displaystyle\\lim_{x\\to0}\\frac{e^{${variableTerm(k, "x", true)}}-1-${variableTerm(k, "x", true)}-\\frac{${k ** 2}}{2}x^2}{x^3}$ を求めよ。`,
+      prompt: `$\\displaystyle\\lim_{x\\to0}\\frac{e^{${variableTerm(k, "x", true)}}-1-${variableTerm(k, "x", true)}${rationalTerm(-(k ** 2), 2, "x^2")}}{x^3}$ を求めよ。`,
       answer: fraction(k ** 3, 6),
     };
   }),
@@ -288,23 +301,23 @@ const TAYLOR_EXTREMA = [
     const k = integer(rng, 1, 3);
     const m = integer(rng, 4, 8);
     if (kind === 1) return {
-      prompt: `$e^{${variableTerm(k, "x", true)}}$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(1/${m})$ を求めよ。`,
+      prompt: `$e^{${variableTerm(k, "x", true)}}$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(\\frac{1}{${m}})$ を求めよ。`,
       answer: fraction(2 * m ** 2 + 2 * k * m + k ** 2, 2 * m ** 2),
     };
     if (kind === 2) return {
-      prompt: `$\\sin(${variableTerm(k, "x", true)})$ の3次マクローリン多項式を $T_3(x)$ とする。$T_3(1/${m})$ を求めよ。`,
+      prompt: `$\\sin(${variableTerm(k, "x", true)})$ の3次マクローリン多項式を $T_3(x)$ とする。$T_3(\\frac{1}{${m}})$ を求めよ。`,
       answer: fraction(6 * k * m ** 2 - k ** 3, 6 * m ** 3),
     };
     if (kind === 3) return {
-      prompt: `$\\cos(${variableTerm(k, "x", true)})$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(1/${m})$ を求めよ。`,
+      prompt: `$\\cos(${variableTerm(k, "x", true)})$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(\\frac{1}{${m}})$ を求めよ。`,
       answer: fraction(2 * m ** 2 - k ** 2, 2 * m ** 2),
     };
     if (kind === 4) return {
-      prompt: `$\\log(1${variableTerm(k, "x")})$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(1/${m})$ を求めよ。`,
+      prompt: `$\\log(1${variableTerm(k, "x")})$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(\\frac{1}{${m}})$ を求めよ。`,
       answer: fraction(2 * k * m - k ** 2, 2 * m ** 2),
     };
     return {
-      prompt: `$\\sqrt{1${variableTerm(k, "x")}}$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(1/${m})$ を求めよ。`,
+      prompt: `$\\sqrt{1${variableTerm(k, "x")}}$ の2次マクローリン多項式を $T_2(x)$ とする。$T_2(\\frac{1}{${m}})$ を求めよ。`,
       answer: fraction(8 * m ** 2 + 4 * k * m - k ** 2, 8 * m ** 2),
     };
   }),
@@ -315,7 +328,7 @@ const TAYLOR_EXTREMA = [
       `\\sin(${variableTerm(k, "x", true)})-${variableTerm(k, "x", true)}`,
       `\\cos(${variableTerm(k, "x", true)})-1`,
       `e^{${variableTerm(k, "x", true)}}-1-${variableTerm(k, "x", true)}`,
-      `\\log(1${variableTerm(k, "x")})-${variableTerm(k, "x", true)}+\\frac{${k ** 2}}{2}x^2`,
+      `\\log(1${variableTerm(k, "x")})-${variableTerm(k, "x", true)}${rationalTerm(k ** 2, 2, "x^2")}`,
     ];
     const orders = [1, 3, 2, 2, 3];
     return {
