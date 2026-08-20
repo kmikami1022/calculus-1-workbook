@@ -7,7 +7,7 @@
     <title>微積分1 問題集</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous" />
-    <link rel="stylesheet" href="./src/style.css?v=1.5.2" />
+    <link rel="stylesheet" href="./src/style.css?v=1.5.3" />
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.js" integrity="sha384-AtrdNsnxl/75rvBneBVH7DtOvCxSVahR2zWqle1coBKd8DEmLoviqNeJSx64gNAs" crossorigin="anonymous"></script>
     <script defer src="./data/questions.js?v=1.3.0"></script>
     <script defer src="./src/judge-core.js?v=1.4.2"></script>
@@ -48,25 +48,30 @@
           <p class="section-kicker">SUBMISSION</p>
           <h2 id="judge-heading">回答</h2>
           <p class="format-description">判定したい問題の回答を、1行ずつ入力してください。</p>
-          <h3 class="answer-rules-heading">記入上のルール</h3>
-          <ul class="answer-rules">
-            <li>各行に「問題番号」「半角スペース」「回答」の順で入力します。</li>
-            <li>複数の空欄がある問題は、空欄の順に回答を半角スペースで区切ります。</li>
-            <li>分数は <code>-3/2</code>、円周率は <code>pi</code>、平方根は <code>sqrt(2)</code> と入力できます。</li>
-            <li>冪乗（べき乗）は <code>x^2</code> または <code>x**2</code> と入力します。どちらも「xの2乗」として判定されます。</li>
-            <li>回答しない問題は入力しなくて構いません。空行も無視されます。</li>
-          </ul>
-          <p class="example-title">記入例</p>
-          <pre class="sample" aria-label="記入例">1 2
+          <details class="answer-help">
+            <summary>記入方法・記入例</summary>
+            <div class="answer-help-content">
+              <h3 class="answer-rules-heading">記入上のルール</h3>
+              <ul class="answer-rules">
+                <li>各行に「問題番号」「半角スペース」「回答」の順で入力します。</li>
+                <li>複数の空欄がある問題は、空欄の順に回答を半角スペースで区切ります。</li>
+                <li>分数は <code>-3/2</code>、円周率は <code>pi</code>、平方根は <code>sqrt(2)</code> と入力できます。</li>
+                <li>冪乗（べき乗）は <code>x^2</code> または <code>x**2</code> と入力します。どちらも「xの2乗」として判定されます。</li>
+                <li>回答しない問題は入力しなくて構いません。空行も無視されます。</li>
+              </ul>
+              <p class="example-title">記入例</p>
+              <pre class="sample" aria-label="記入例">1 2
 2 -3/2
 3 pi/4
 12 -1 1 連続でない</pre>
-          <div class="example-notes" aria-label="記入例の説明">
-            <p><code>1 2</code><span>問題1の答えが「2」</span></p>
-            <p><code>2 -3/2</code><span>問題2の答えが「−3/2」</span></p>
-            <p><code>3 pi/4</code><span>問題3の答えが「π/4」</span></p>
-            <p><code>12 -1 1 連続でない</code><span>問題12の3つの空欄を順番に回答</span></p>
-          </div>
+              <div class="example-notes" aria-label="記入例の説明">
+                <p><code>1 2</code><span>問題1の答えが「2」</span></p>
+                <p><code>2 -3/2</code><span>問題2の答えが「−3/2」</span></p>
+                <p><code>3 pi/4</code><span>問題3の答えが「π/4」</span></p>
+                <p><code>12 -1 1 連続でない</code><span>問題12の3つの空欄を順番に回答</span></p>
+              </div>
+            </div>
+          </details>
           <label for="submission">回答欄</label>
           <textarea id="submission" rows="14" spellcheck="false" placeholder="1 2&#10;2 -3/2&#10;3 -4"></textarea>
           <div class="button-row">

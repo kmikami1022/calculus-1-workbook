@@ -196,13 +196,20 @@ h2 { width: fit-content; margin: 0; padding-bottom: 3px; color: var(--navy); bor
 .katex-display { overflow-x: auto; overflow-y: hidden; }
 
 .format-description { margin: 10px 0 12px; color: var(--muted); font-size: .93rem; }
-.answer-rules-heading { margin: 18px 0 6px; color: var(--navy); font-size: .93rem; }
+.answer-help { margin: 0 0 16px; overflow: clip; background: white; border: 1px solid var(--line); border-radius: 7px; }
+.answer-help > summary { display: flex; align-items: center; gap: 8px; padding: 10px 12px; color: var(--navy); background: #fbfcfd; font-size: .88rem; font-weight: 800; cursor: pointer; list-style: none; }
+.answer-help > summary::-webkit-details-marker { display: none; }
+.answer-help > summary::before { content: "＋"; color: var(--gold); font-size: 1rem; line-height: 1; }
+.answer-help[open] > summary { background: var(--gold-light); border-bottom: 1px solid var(--line); }
+.answer-help[open] > summary::before { content: "−"; }
+.answer-help-content { padding: 14px; }
+.answer-rules-heading { margin: 0 0 6px; color: var(--navy); font-size: .93rem; }
 .answer-rules { margin: 0 0 16px; padding-left: 1.25rem; color: var(--muted); font-size: .84rem; line-height: 1.65; }
 .answer-rules li + li { margin-top: 4px; }
 .answer-rules code, .example-notes code { padding: 1px 4px; color: var(--navy); background: var(--gold-light); border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 .example-title { margin: 0 0 6px; color: var(--navy); font-size: .88rem; font-weight: 800; }
 .sample { margin: 0 0 10px; padding: 12px 14px; color: #ffffff; background: var(--navy); border-left: 3px solid var(--gold); border-radius: 7px; font-size: .83rem; line-height: 1.55; }
-.example-notes { margin: 0 0 18px; display: grid; gap: 5px; }
+.example-notes { margin: 0; display: grid; gap: 5px; }
 .example-notes p { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px; align-items: start; color: var(--muted); font-size: .78rem; line-height: 1.5; }
 label { display: block; margin-bottom: 6px; font-size: .88rem; font-weight: 800; }
 textarea { width: 100%; resize: vertical; padding: 13px; color: var(--ink); background: #fbfcfd; border: 1px solid #b8c3cd; border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92rem; line-height: 1.6; }

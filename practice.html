@@ -7,7 +7,7 @@
     <title>微積分1 演習</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous" />
-    <link rel="stylesheet" href="./src/style.css?v=1.5.2" />
+    <link rel="stylesheet" href="./src/style.css?v=1.5.3" />
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.js" integrity="sha384-AtrdNsnxl/75rvBneBVH7DtOvCxSVahR2zWqle1coBKd8DEmLoviqNeJSx64gNAs" crossorigin="anonymous"></script>
     <script defer src="./src/judge-core.js?v=1.4.2"></script>
     <script defer src="./src/generators-core.js?v=1.4.1"></script>
@@ -57,23 +57,28 @@
             <p class="section-kicker">SUBMISSION</p>
             <h2 id="practice-judge-heading">回答</h2>
             <p class="format-description">表示された問題の回答を、1行ずつ入力してください。</p>
-            <h3 class="answer-rules-heading">記入上のルール</h3>
-            <ul class="answer-rules">
-              <li>各行に「問題番号」「半角スペース」「回答」の順で入力します。</li>
-              <li>分数は <code>-1/2</code>、円周率は <code>pi</code>、平方根は <code>sqrt(2)</code> と入力できます。</li>
-              <li>冪乗（べき乗）は <code>x^2</code> または <code>x**2</code> と入力します。どちらも「xの2乗」として判定されます。</li>
-              <li>掛け算は <code>3*pi</code> のように入力できます。</li>
-              <li>回答しない問題は入力しなくて構いません。空行も無視されます。</li>
-            </ul>
-            <p class="example-title">記入例</p>
-            <pre class="sample" aria-label="記入例">1 4
+            <details class="answer-help">
+              <summary>記入方法・記入例</summary>
+              <div class="answer-help-content">
+                <h3 class="answer-rules-heading">記入上のルール</h3>
+                <ul class="answer-rules">
+                  <li>各行に「問題番号」「半角スペース」「回答」の順で入力します。</li>
+                  <li>分数は <code>-1/2</code>、円周率は <code>pi</code>、平方根は <code>sqrt(2)</code> と入力できます。</li>
+                  <li>冪乗（べき乗）は <code>x^2</code> または <code>x**2</code> と入力します。どちらも「xの2乗」として判定されます。</li>
+                  <li>掛け算は <code>3*pi</code> のように入力できます。</li>
+                  <li>回答しない問題は入力しなくて構いません。空行も無視されます。</li>
+                </ul>
+                <p class="example-title">記入例</p>
+                <pre class="sample" aria-label="記入例">1 4
 2 -1/2
 3 3*pi</pre>
-            <div class="example-notes" aria-label="記入例の説明">
-              <p><code>1 4</code><span>問題1の答えが「4」</span></p>
-              <p><code>2 -1/2</code><span>問題2の答えが「−1/2」</span></p>
-              <p><code>3 3*pi</code><span>問題3の答えが「3π」</span></p>
-            </div>
+                <div class="example-notes" aria-label="記入例の説明">
+                  <p><code>1 4</code><span>問題1の答えが「4」</span></p>
+                  <p><code>2 -1/2</code><span>問題2の答えが「−1/2」</span></p>
+                  <p><code>3 3*pi</code><span>問題3の答えが「3π」</span></p>
+                </div>
+              </div>
+            </details>
             <label for="practice-submission">回答欄</label>
             <textarea id="practice-submission" rows="10" spellcheck="false" placeholder="1 回答&#10;2 回答&#10;3 回答&#10;4 回答&#10;5 回答"></textarea>
             <div class="button-row">
