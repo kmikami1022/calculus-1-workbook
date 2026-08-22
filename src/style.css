@@ -183,6 +183,8 @@ h2 { width: fit-content; margin: 0; padding-bottom: 3px; color: var(--navy); bor
 .problem-card:target { margin-inline: -10px; padding-inline: 14px; background: #fffbe6; border-radius: 8px; }
 .problem-number { color: var(--muted); font: 800 .78rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; }
 .problem-content { min-width: 0; overflow-wrap: anywhere; }
+.problem-content .katex .mfrac { font-size: 1.12em; }
+.answer-box { display: inline-flex; min-width: 1.55em; min-height: 1.55em; margin: 0 .08em; padding: 0 .25em; align-items: center; justify-content: center; color: var(--ink); background: white; border: 1px solid currentColor; border-radius: 2px; font-family: "Times New Roman", serif; line-height: 1.2; vertical-align: -.15em; }
 .question-topic {
   display: table;
   margin: 0 0 7px;

@@ -11,7 +11,18 @@
   }
 
   function prepareMath(tex) {
-    return tex.replace(/\\qty(?=[([{])/g, "");
+    return tex
+      .replace(/\\qty(?=[([{])/g, "")
+      .replace(/\\fbox(?=\{)/g, "\\boxed");
+  }
+
+  function renderText(fragment) {
+    return escapeHtml(fragment)
+      .replace(/\\fbox\{([^{}]+)\}/g, '<span class="answer-box">$1</span>')
+      .replace(/\\begin\{itemize\}|\\end\{itemize\}/g, "")
+      .replace(/\\item\s*/g, "<br>・")
+      .replace(/\\\\/g, "<br>")
+      .replace(/\n/g, " ");
   }
 
   function renderPrompt(prompt) {
@@ -29,11 +40,7 @@
           }
           return `<code>${escapeHtml(tex)}</code>`;
         }
-        return escapeHtml(fragment)
-          .replace(/\\begin\{itemize\}|\\end\{itemize\}/g, "")
-          .replace(/\\item\s*/g, "<br>・")
-          .replace(/\\\\/g, "<br>")
-          .replace(/\n/g, " ");
+        return renderText(fragment);
       })
       .join("");
   }
@@ -83,5 +90,5 @@
     elements.panel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  globalThis.CalculusUI = { createQuestionCard, renderResults };
+  globalThis.CalculusUI = { createQuestionCard, renderResults, prepareMath, renderText };
 })();
